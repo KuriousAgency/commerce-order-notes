@@ -146,8 +146,9 @@ class Notes extends Component
                     ])->execute();
                 }
             }
+
             Craft::$app->getElements()->saveElement($order, false);
-            if ($orderComplete != $order->isCompleted) {
+            if ($orderComplete !== $order->isCompleted) {
                 $order->isCompleted = true;
                 $order->setRecalculationMode($orderRecalcMode);
                 Craft::$app->getElements()->saveElement($order, false);

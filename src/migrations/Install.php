@@ -64,10 +64,6 @@ class Install extends Migration
 
     // Protected Methods
     // =========================================================================
-
-    /**
-     * @return bool
-     */
     protected function createTables(): bool
     {
         $tablesCreated = false;
@@ -95,27 +91,16 @@ class Install extends Migration
         return $tablesCreated;
     }
 
-    /**
-     * @return void
-     */
     protected function createIndexes(): void
     {
         $this->createIndex(
-            $this->db->getIndexName(
-                '{{%commerce_ordernotes}}',
-                'orderId',
-                true
-            ),
+            $this->db->getIndexName(),
             '{{%commerce_ordernotes}}',
             'orderId',
             false
         );
         $this->createIndex(
-            $this->db->getIndexName(
-                '{{%commerce_ordernotes}}',
-                'userId',
-                true
-            ),
+            $this->db->getIndexName(),
             '{{%commerce_ordernotes}}',
             'userId',
             false
@@ -123,31 +108,21 @@ class Install extends Migration
         // Additional commands depending on the db driver
         switch ($this->driver) {
             case DbConfig::DRIVER_MYSQL:
-                break;
             case DbConfig::DRIVER_PGSQL:
                 break;
         }
     }
 
-    /**
-     * @return void
-     */
     protected function addForeignKeys(): void
     {
         $this->addForeignKey(null, '{{%commerce_ordernotes}}', ['userId'], '{{%users}}', ['id'], null, 'CASCADE');
         $this->addForeignKey(null, '{{%commerce_ordernotes}}', ['orderId'], '{{%commerce_orders}}', ['id'], 'CASCADE', 'CASCADE');
     }
 
-    /**
-     * @return void
-     */
     protected function insertDefaultData(): void
     {
     }
 
-    /**
-     * @return void
-     */
     protected function removeTables(): void
     {
         $this->dropTableIfExists('{{%commerce_ordernotes}}');

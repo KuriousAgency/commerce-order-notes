@@ -30,14 +30,23 @@ class Note extends Model
     // =========================================================================
 
     public ?int $id = null;
+
     public ?int $orderId = null;
+
     public ?int $userId = null;
+
     public ?string $comments = '';
+
     public ?string $type = '';
+
     public ?string $value = '';
+
     public mixed $data = null;
+
     public ?DateTime $dateCreated = null;
+
     public ?DateTime $dateUpdated = null;
+
     public ?string $uid = null;
 
     private ?Order $_order = null;
@@ -52,10 +61,11 @@ class Note extends Model
 
     public function getOrder(): Order
     {
-        if (!$this->_order) {
+        if ($this->_order === null) {
             if (!$this->orderId) {
                 return null;
             }
+
             $this->_order = Order::findOne($this->orderId);
         }
 
@@ -85,7 +95,8 @@ class Note extends Model
             $this->data = json_encode($this->data);
             //return (object) $this->data;
         }
-        return json_decode($this->data);
+
+        return json_decode((string) $this->data);
     }
 
     public function getValue(string $currency = ''): string
@@ -105,7 +116,7 @@ class Note extends Model
         foreach ($this->data as $key => $item)
         {
             if ($item == '') {
-                $this->addError($key, ucfirst($key)." cannot be blank.");
+                $this->addError($key, ucfirst((string) $key)." cannot be blank.");
             }
         }
     }

@@ -53,8 +53,9 @@ class Add extends Note
         $result = $this->comments."\n";
         foreach ($this->getData()->add as $item)
         {
-            $result .= "Added: $item->qty x $item->label\n";
+            $result .= sprintf('Added: %s x %s%s', $item->qty, $item->label, PHP_EOL);
         }
+
         return $result;
     }
 

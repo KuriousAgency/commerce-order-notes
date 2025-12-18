@@ -48,18 +48,10 @@ class OrderNotes extends Plugin
 {
     // Static Properties
     // =========================================================================
-
-    /**
-     * @var Plugin
-     */
     public static Plugin $plugin;
 
     // Public Properties
     // =========================================================================
-
-    /**
-     * @var string
-     */
     public string $schemaVersion = '1.1.3';
 
     // Public Methods
@@ -81,12 +73,12 @@ class OrderNotes extends Plugin
             Event::on(
                 View::class,
                 View::EVENT_BEFORE_RENDER_TEMPLATE,
-                function (TemplateEvent $event) {
+                function (TemplateEvent $event): void {
                     try {
                         Craft::$app->getView()->registerAssetBundle(OrderNotesAsset::class);
-                    } catch (InvalidConfigException $e) {
+                    } catch (InvalidConfigException $invalidConfigException) {
                         Craft::error(
-                            'Error registering AssetBundle - '.$e->getMessage(),
+                            'Error registering AssetBundle - '.$invalidConfigException->getMessage(),
                             __METHOD__
                         );
                     }
@@ -94,7 +86,7 @@ class OrderNotes extends Plugin
             );
         }
 
-        Event::on(OrderAdjustments::class, OrderAdjustments::EVENT_REGISTER_ORDER_ADJUSTERS, function(RegisterComponentTypesEvent $e) {
+        Event::on(OrderAdjustments::class, OrderAdjustments::EVENT_REGISTER_ORDER_ADJUSTERS, function(RegisterComponentTypesEvent $e): void {
             $e->types[] = ManualAdjuster::class;
             $e->types[] = CodeAdjuster::class;
             $e->types[] = RefundAdjuster::class;
@@ -103,7 +95,7 @@ class OrderNotes extends Plugin
         Event::on(
             UrlManager::class,
             UrlManager::EVENT_REGISTER_SITE_URL_RULES,
-            function (RegisterUrlRulesEvent $event) {
+            function (RegisterUrlRulesEvent $event): void {
                 $event->rules['siteActionTrigger1'] = 'commerce-order-notes/default';
             }
         );
@@ -111,14 +103,14 @@ class OrderNotes extends Plugin
         Event::on(
             UrlManager::class,
             UrlManager::EVENT_REGISTER_CP_URL_RULES,
-            function (RegisterUrlRulesEvent $event) {
+            function (RegisterUrlRulesEvent $event): void {
                 $event->rules['cpActionTrigger1'] = 'commerce-order-notes/default/do-something';
             }
         );
 
         //add event for refund transactions to save order note.
         if (Craft::$app->getRequest()->getIsCpRequest()) {
-            Event::on(Payments::class, Payments::EVENT_AFTER_REFUND_TRANSACTION, function(RefundTransactionEvent $event) {
+            Event::on(Payments::class, Payments::EVENT_AFTER_REFUND_TRANSACTION, function(RefundTransactionEvent $event): void {
                 //Craft::dd($event);
                 if ($event->transaction->status == 'success') {
                 $model = new RefundModel();
@@ -135,7 +127,7 @@ class OrderNotes extends Plugin
             });
         }
 
-        Event::on(UserPermissions::class, UserPermissions::EVENT_REGISTER_PERMISSIONS, function(RegisterUserPermissionsEvent $event) {
+        Event::on(UserPermissions::class, UserPermissions::EVENT_REGISTER_PERMISSIONS, function(RegisterUserPermissionsEvent $event): void {
 
             $permissions = [];
 
@@ -159,9 +151,7 @@ class OrderNotes extends Plugin
         Event::on(
             Plugins::class,
             Plugins::EVENT_AFTER_INSTALL_PLUGIN,
-            function (PluginEvent $event) {
-                if ($event->plugin === $this) {
-                }
+            function (PluginEvent $event) : void {
             }
         );
 

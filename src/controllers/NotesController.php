@@ -88,6 +88,7 @@ class NotesController extends Controller
         if ($model->type == 'webdna\\commerce\\ordernotes\\models\\Note' || $model->type == 'webdna\\commerce\\ordernotes\\models\\Email') {
             $recalc = false;
         }
+
         //Craft::dd($recalc);
 
         OrderNotes::$plugin->notes->updateOrder($model->order, $recalc);

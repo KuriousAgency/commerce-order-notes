@@ -68,6 +68,7 @@ class Manual extends Component implements AdjusterInterface
                 $adjustments[] = $adjustment;
             }
         }
+
         return $adjustments;
     }
 }
